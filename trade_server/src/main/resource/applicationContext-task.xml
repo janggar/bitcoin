@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<!-- 	使用spring自带的定时任务功能，注解配置定时任务   步骤：
+		1：配置<task:annotation-driven/>
+		2：使用@Scheduled 注解对应的方法即可
+		3：扫描bean 注解@Component  <context:component-scan base-package="com.yunhai" />
+	-->
+    <task:annotation-driven/>
+
+</beans>

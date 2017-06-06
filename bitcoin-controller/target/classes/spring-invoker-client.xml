@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- tcp\ip协议 	spring rmi 服务器端配置 -->
+	<bean id="springRmiDemo" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceUrl" value="rmi://127.0.0.1:1099/rmiServiceDemo"></property>
+		<property name="serviceInterface" value="com.yunhai.service.IRmiService"></property>
+	</bean>
+	
+	<!-- btc38 平台 用户资产服务 -->
+	<bean id="btc38CapitalService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+		<property name="serviceUrl" value="rmi://127.0.0.1:1099/btc38CapitalService"></property>
+		<property name="serviceInterface" value="com.yunhai.bitccy.service.IBtc38CapitalService"></property>
+	</bean>
+
+   <!--     http 协议  暂时不成功。。链接server出现404错误  后续再解决-->
+<!-- 	<bean id="springRmi" -->
+<!-- 		class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean"> -->
+<!-- 		<property name="serviceUrl" value="http://localhost:8082/yunhai_server/spring/rmiServerDemo"></property> -->
+<!-- 		<property name="serviceInterface" value="com.yunhai.service.IRmiService"></property> -->
+<!-- 	</bean> -->
+</beans>

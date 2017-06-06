@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- configuration是logback.xml文件的根节点，里面有三个属性： scan:当此属性为true时，logback.xml文件如果发生改变，将会被重新加载，默认值是true 
+	scanPeriod:设置监测配置文件是否有修改的时间间隔（通俗讲：就是设置多长时间查看一下logback.xml文件有没有被修改） 如果没有给出时间单位，默认是ms,并且当scan为true时，此属性生效，默认间隔时间是1分钟。 
+	debug:当此属性设置为true时，将打印出logback.xml内部日志消息，实时查看logback.xml的运行状态，默认值是false。 -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<!-- 整个logback.xml文件中只有四个主要的标签：其一是根标签configuration，其余是三个子标签：appende，logger，root 
+		但是有人会疑问：那property和timestamp是做什么的？答案是：这两个标签是用来为以上提到的是三个子标签定义属性和赋值的。例如： 第一个property标签中定义了一个USER_HOME属性，其值是/logs，scope是这个属性的作用范围，scope="context"是指该属性只能在本配置文件中使用。 
+		而timestamp定义了一个时间戳，也就是定义了一个时间格式，以供三个子标签使用。 -->
+	<property name="USER_HOME" value="e:/logs" />
+	<property scope="context" name="FILE_NAME" value="yunhai-server" />
+	<timestamp key="byDay" datePattern="yyyy-MM-dd" />
+
+	<!-- 第一个子标签appender： name:标签名，为了让其他标签调用的唯一标示，相当于html标签中的id class:引用的类，从此类中可以看出该appender标签定义的是日志输出的位置，也就是往哪里输出 
+		ch.qos.logback.core.ConsoleAppender可以看出是往控制台上输出。 encoder：该标签中定义了日志的输出格式 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符 级别分别是：TRACE 
+				< DEBUG < INFO <WARN < ERROR -->
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- class:从此类中可以看出该appender标签定义的日志输出位置是回滚文件，也就是说：把日志输出到一个文件中，并且该文件可以回滚，至于怎么回滚请看下面的注释 -->
+	<appender name="log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+		<!-- 定义了日志文件的目录结构和文件名：磁盘根目录：/logs/mylog-logback.log 注意了：该文件名是在日志文件没有触发回滚要求时的文件名，也就是说现在的日志文件还没有满足xxMB，一旦满足了就会按照rollingPolicy里设置的属性进行重新命名 -->
+		<file>${USER_HOME}/${FILE_NAME}.log</file>
+
+		<!-- rollingPolicy：回滚策略 fileNamePattern：标签中定义的是日志文件一旦满足5MB就重新命名成新文件的命名格式，其中minIndex和maxIndex分别对应的是满足5MB的日志文件的命名序号（1~10）对应%i.log中的i值。 
+			如：mylog-logback-2016-07-12-1.log，mylog-logback-2016-07-12-2.log，mylog-logback-2016-07-12-3.log -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${USER_HOME}/${byDay}/${FILE_NAME}-${byDay}-%i.log
+			</fileNamePattern>
+			<!--日志文件保留天数 -->
+			<MaxHistory>30</MaxHistory>
+			<minIndex>1</minIndex>
+			<maxIndex>10</maxIndex>
+		</rollingPolicy>
+
+		<!-- 日志文件最大的大小 触发策略：当日志文件满足5MB就会出发回滚策略 -->
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>5MB</maxFileSize>
+		</triggeringPolicy>
+
+		<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -
+				%msg%n</pattern>
+		</encoder>
+
+	</appender>
+	<!-- 设置哪个目录或者包，类使用哪个日志 将控制impl包下的所有类的日志的打印，level是打印级别：debug，如果不设置level，它将继承它的上级<root>的日志级别“DEBUG” 
+		如果没有设置addtivity，默认为true，将此loger的打印信息向上级传递； 如果没有设置appender-ref，此loger本身不打印任何信息。 -->
+	<!-- <logger name="com.jbat.service.impl" level="debug" additivity="true"> 
+		<appender-ref ref="log_file" /> </logger> -->
+
+	<!-- 日志输出级别 -->
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="log_file" />
+	</root>
+
+	<!--执行过程总结： 当 执行com.jbat.service.impl类的方法时，会首先执行<logger name="com.jbat.service.impl" 
+		/>本身如果引用了appender-ref标签，就按照ref="log_file" 设置的格式打印； 当执行不在impl中的方法时，会将级别为“DEBUG”及大于“DEBUG”的日志信息传递给root，root接到下级传递的信息，交给已经配置好的名为“STDOUT”和“log_file”的appender处理，“STDOUT”appender将信息打印到控制台，“log_file”appender将信息打印到日志文件； -->
+</configuration>
+
+

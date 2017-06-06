@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yunhai.dao.automatic.MarketTickerMapper" >
+  <resultMap id="BaseResultMap" type="com.yunhai.model.automatic.MarketTicker" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="buy" property="buy" jdbcType="DECIMAL" />
+    <result column="sell" property="sell" jdbcType="DECIMAL" />
+    <result column="low" property="low" jdbcType="DECIMAL" />
+    <result column="high" property="high" jdbcType="DECIMAL" />
+    <result column="last" property="last" jdbcType="DECIMAL" />
+    <result column="vol" property="vol" jdbcType="DECIMAL" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="platform" property="platform" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="DATE" />
+    <result column="currency" property="currency" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, buy, sell, low, high, last, vol, date, platform, createtime, currency
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.yunhai.model.automatic.MarketTickerExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from market_ticker
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from market_ticker
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from market_ticker
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yunhai.model.automatic.MarketTickerExample" >
+    delete from market_ticker
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yunhai.model.automatic.MarketTicker" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into market_ticker (buy, sell, low, 
+      high, last, vol, date, 
+      platform, createtime, currency
+      )
+    values (#{buy,jdbcType=DECIMAL}, #{sell,jdbcType=DECIMAL}, #{low,jdbcType=DECIMAL}, 
+      #{high,jdbcType=DECIMAL}, #{last,jdbcType=DECIMAL}, #{vol,jdbcType=DECIMAL}, #{date,jdbcType=DATE}, 
+      #{platform,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE}, #{currency,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yunhai.model.automatic.MarketTicker" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into market_ticker
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="buy != null" >
+        buy,
+      </if>
+      <if test="sell != null" >
+        sell,
+      </if>
+      <if test="low != null" >
+        low,
+      </if>
+      <if test="high != null" >
+        high,
+      </if>
+      <if test="last != null" >
+        last,
+      </if>
+      <if test="vol != null" >
+        vol,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="platform != null" >
+        platform,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="currency != null" >
+        currency,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="buy != null" >
+        #{buy,jdbcType=DECIMAL},
+      </if>
+      <if test="sell != null" >
+        #{sell,jdbcType=DECIMAL},
+      </if>
+      <if test="low != null" >
+        #{low,jdbcType=DECIMAL},
+      </if>
+      <if test="high != null" >
+        #{high,jdbcType=DECIMAL},
+      </if>
+      <if test="last != null" >
+        #{last,jdbcType=DECIMAL},
+      </if>
+      <if test="vol != null" >
+        #{vol,jdbcType=DECIMAL},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="platform != null" >
+        #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yunhai.model.automatic.MarketTickerExample" resultType="java.lang.Integer" >
+    select count(*) from market_ticker
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update market_ticker
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.buy != null" >
+        buy = #{record.buy,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sell != null" >
+        sell = #{record.sell,jdbcType=DECIMAL},
+      </if>
+      <if test="record.low != null" >
+        low = #{record.low,jdbcType=DECIMAL},
+      </if>
+      <if test="record.high != null" >
+        high = #{record.high,jdbcType=DECIMAL},
+      </if>
+      <if test="record.last != null" >
+        last = #{record.last,jdbcType=DECIMAL},
+      </if>
+      <if test="record.vol != null" >
+        vol = #{record.vol,jdbcType=DECIMAL},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.platform != null" >
+        platform = #{record.platform,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=DATE},
+      </if>
+      <if test="record.currency != null" >
+        currency = #{record.currency,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update market_ticker
+    set id = #{record.id,jdbcType=BIGINT},
+      buy = #{record.buy,jdbcType=DECIMAL},
+      sell = #{record.sell,jdbcType=DECIMAL},
+      low = #{record.low,jdbcType=DECIMAL},
+      high = #{record.high,jdbcType=DECIMAL},
+      last = #{record.last,jdbcType=DECIMAL},
+      vol = #{record.vol,jdbcType=DECIMAL},
+      date = #{record.date,jdbcType=DATE},
+      platform = #{record.platform,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=DATE},
+      currency = #{record.currency,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yunhai.model.automatic.MarketTicker" >
+    update market_ticker
+    <set >
+      <if test="buy != null" >
+        buy = #{buy,jdbcType=DECIMAL},
+      </if>
+      <if test="sell != null" >
+        sell = #{sell,jdbcType=DECIMAL},
+      </if>
+      <if test="low != null" >
+        low = #{low,jdbcType=DECIMAL},
+      </if>
+      <if test="high != null" >
+        high = #{high,jdbcType=DECIMAL},
+      </if>
+      <if test="last != null" >
+        last = #{last,jdbcType=DECIMAL},
+      </if>
+      <if test="vol != null" >
+        vol = #{vol,jdbcType=DECIMAL},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="platform != null" >
+        platform = #{platform,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="currency != null" >
+        currency = #{currency,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yunhai.model.automatic.MarketTicker" >
+    update market_ticker
+    set buy = #{buy,jdbcType=DECIMAL},
+      sell = #{sell,jdbcType=DECIMAL},
+      low = #{low,jdbcType=DECIMAL},
+      high = #{high,jdbcType=DECIMAL},
+      last = #{last,jdbcType=DECIMAL},
+      vol = #{vol,jdbcType=DECIMAL},
+      date = #{date,jdbcType=DATE},
+      platform = #{platform,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=DATE},
+      currency = #{currency,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

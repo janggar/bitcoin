@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!--数据库驱动 -->
+	<classPathEntry location="E:\repository\mysql\mysql-connector-java\5.1.6\mysql-connector-java-5.1.6.jar" />
+
+	<context id="mysqlTables" targetRuntime="MyBatis3">
+		<!-- 		注释相关配置 -->
+		<commentGenerator>
+		 	<!--  关闭自动生成的注释  -->
+			<property name="suppressAllComments" value="true" />
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+		<!--数据库链接地址账号密码 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/yunhai" userId="root"
+			password="j1989922">
+		</jdbcConnection>
+		<!--jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
+			connectionURL="jdbc:sqlserver://mfly.vicp.net:1433;DatabaseName=test" userId="sa" 
+			password="12345@bj"> </jdbcConnection -->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!--生成Model类存放位置 -->
+		<javaModelGenerator targetPackage="com.yunhai.model.automatic"
+			targetProject="yunhai_server\src\main\java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!--生成映射文件存放位置 -->
+		<sqlMapGenerator targetPackage="com.yunhai.dao.mapper.automatic"
+			targetProject="yunhai_server\src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!--生成Dao类存放位置 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.yunhai.dao.automatic" targetProject="yunhai_server\src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!--生成对应表及类名 -->
+		<table tableName="user" domainObjectName="User">
+			<generatedKey column="id" identity="true" sqlStatement="Mysql" />
+		</table>
+		<!-- <table tableName="customer" domainObjectName="Customer" ><generatedKey 
+			column="ID" identity="true" sqlStatement="Mysql"/></table> -->
+	</context>
+</generatorConfiguration>
+
+
+

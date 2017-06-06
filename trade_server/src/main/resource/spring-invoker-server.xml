@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+       
+	<!-- tcp\ip协议 	spring rmi 服务器端配置 -->
+   <bean id="rmiServerDemo" class="org.springframework.remoting.rmi.RmiServiceExporter">
+    	<property name="serviceName" value="rmiServiceDemo"></property>
+        <property name="service" ref="rmiServiceImpl"></property>
+        <property name="serviceInterface" value="com.yunhai.service.IRmiService"/>
+         <property name="registryPort" value="1099" />
+    </bean>
+    
+    <!-- tcp\ip协议 	spring rmi 服务器端配置 -->
+   <bean id="btc38CapitalService" class="org.springframework.remoting.rmi.RmiServiceExporter">
+    	<property name="serviceName" value="btc38CapitalService"></property>
+        <property name="service" ref="btc38CapitalServiceImpl"></property>
+        <property name="serviceInterface" value="com.yunhai.bitccy.service.IBtc38CapitalService"/>
+         <property name="registryPort" value="1099" />
+    </bean>
+    
+	<!--     http 协议 -->
+	<!-- <bean name="rmiServerDemo" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+		<property name="service" ref="rmiServiceImpl"></property>
+		 <property name="serviceInterface" value="com.yunhai.service.IRmiService"/>
+	</bean> 
+    
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="remoting/rmiServiceDemo">rmiServerDemo</prop>
+			</props>
+		</property>
+	</bean>--> 
+</beans>
