@@ -19,7 +19,7 @@ import utils.NumberFormatUtils;
  */
 public class RateArithmetic {
 	//收益利率
-	private static final String[] rate = {"1%","2%","3%","5%","7%","10%","15%","20%"};
+	private static final String[] rate = {"0.5%","1%","2%","3%","5%","7%","10%","15%","20%"};
 	//交易手续费率
 	private static final String BTC38_COMMON_TRADE_RATE = "0.1%";
 	//btc ltc tmc 三种币的交易手续费率
